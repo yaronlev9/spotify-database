@@ -116,7 +116,6 @@ app.get('/playlist/:id', async (req, res) =>{
 });
 
 app.post('/song', async (req, res) =>{
-    console.log(req.body.Youtube_link);
     mysqlCon.query(`SET @ID = (SELECT MAX(SongID) FROM song);
     INSERT INTO song (SongID, Youtube_link, AlbumID, ArtistID, Title, Length, Lyrics, Created_at, Upload_at)
     VALUES (@ID + 1, '${req.body.Youtube_link}', ${req.body.AlbumID ? req.body.AlbumID : 0}, ${req.body.ArtistID}, 
