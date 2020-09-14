@@ -291,6 +291,6 @@ app.delete('/song/:id', async (req, res) =>{
 });
 
 
-const port = 8080;
+const port = process.env.PORT;
 console.log(`listening to port ${port}`)
 app.listen(port);
