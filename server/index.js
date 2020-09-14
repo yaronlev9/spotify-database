@@ -28,7 +28,7 @@ mysqlCon.connect(err => {
 app.get('/top_songs', (req, res) => {
     mysqlCon.query('SELECT * FROM song ORDER BY SongID LIMIT 20;', (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -38,7 +38,7 @@ app.get('/top_songs', (req, res) => {
 app.get('/top_artists', (req, res) => {
     mysqlCon.query('SELECT * FROM artist ORDER BY ArtistID LIMIT 20;', (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -48,7 +48,7 @@ app.get('/top_artists', (req, res) => {
 app.get('/top_albums', (req, res) => {
     mysqlCon.query('SELECT * FROM album ORDER BY AlbumID LIMIT 20;', (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -64,7 +64,7 @@ app.get('/top_playlists', (req, res) => {
     GROUP BY a.Playlist_name
     ORDER BY a.PlaylistID LIMIT 20;`, (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -116,10 +116,11 @@ app.get('/playlist/:id', async (req, res) =>{
 });
 
 app.post('/song', async (req, res) =>{
+    console.log(req.body.Youtube_link);
     mysqlCon.query(`SET @ID = (SELECT MAX(SongID) FROM song);
     INSERT INTO song (SongID, Youtube_link, AlbumID, ArtistID, Title, Length, Lyrics, Created_at, Upload_at)
-    VALUES (@ID + 1, ${req.body.Youtube_link}, ${req.body.AlbumID ? req.body.AlbumID : 0}, ${req.body.ArtistID}, 
-    ${req.body.Title}, ${req.body.Length}, ${req.body.Lyrics}, ${req.body.Created_at}, now());
+    VALUES (@ID + 1, '${req.body.Youtube_link}', ${req.body.AlbumID ? req.body.AlbumID : 0}, ${req.body.ArtistID}, 
+    '${req.body.Title}', ${req.body.Length}, '${req.body.Lyrics}', ${req.body.Created_at ? `'${req.body.Created_at}'` : null}, now());
     UPDATE playlist a
     SET a.Num_of_tracks = (SELECT COUNT(*) FROM playlist_songs WHERE a.PlaylistID = PlaylistID);
     UPDATE album a
@@ -130,7 +131,7 @@ app.post('/song', async (req, res) =>{
     SET a.Track_number = (@i := @i + 1)
     WHERE AlbumID = @album;`, (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -140,7 +141,7 @@ app.post('/song', async (req, res) =>{
 app.post('/artist', async (req, res) =>{
     mysqlCon.query(`SET @ID = (SELECT MAX(ArtistID) FROM artist);
     INSERT INTO artist (ArtistID, Artist_name, Cover_img, Upload_at)
-    VALUES (@ID + 1, ${req.body.Name}, ${req.body.Cover_img}, now());`, (error, results, fields) => {
+    VALUES (@ID + 1, '${req.body.Name}', ${req.body.Cover_img ? `'${req.body.Cover_img}'`: null}, now());`, (error, results, fields) => {
         if (error) {
             res.send(err.message);
             throw error;
@@ -152,10 +153,11 @@ app.post('/artist', async (req, res) =>{
 app.post('/album', async (req, res) =>{
     mysqlCon.query(`SET @ID = (SELECT MAX(AlbumID) FROM album);
     INSERT INTO album (AlbumID, ArtistID, Album_name, Cover_img, Created_at, Upload_at, Num_of_tracks)
-    VALUES (@ID + 1, ${req.body.ArtistID}, ${req.body.Name}, ${req.body.Cover_img}, ${req.body.Created_at}, now(), 0);`, 
+    VALUES (@ID + 1, ${req.body.ArtistID}, '${req.body.Name}', ${req.body.Cover_img ? `'${req.body.Cover_img}'`: null}, 
+    ${req.body.Created_at ? `'${req.body.Created_at}'` : null}, now(), 0);`, 
     (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -165,9 +167,10 @@ app.post('/album', async (req, res) =>{
 app.post('/playlist', async (req, res) =>{
     mysqlCon.query(`SET @ID = (SELECT MAX(PlaylistID) FROM playlist);
     INSERT INTO playlist (PlaylistID, Playlist_name, Cover_img, Created_at, Upload_at, Num_of_tracks)
-    VALUES (@ID + 1, ${req.body.Name}, ${req.body.Cover_img}, ${req.body.Created_at}, now(), 0);`, (error, results, fields) => {
+    VALUES (@ID + 1, '${req.body.Name}', ${req.body.Cover_img ? `'${req.body.Cover_img}'`: null}, 
+    ${req.body.Created_at ? `'${req.body.Created_at}'` : null}, now(), 0);`, (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -181,7 +184,7 @@ app.post('/playlist/:id', async (req, res) =>{
     UPDATE playlist a
     SET a.Num_of_tracks = (SELECT COUNT(*) FROM playlist_songs WHERE a.PlaylistID = PlaylistID);`, (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -193,7 +196,7 @@ app.put('/song/:id', async (req, res) =>{
     [req.body.Youtube_link, req.body.Title, req.body.Length, req.body.Lyrics, req.body.Created_at, req.params.id], 
     (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -205,7 +208,7 @@ app.put('/artist/:id', async (req, res) =>{
     [req.body.Artist_name, req.body.Cover_img, req.params.id], 
     (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -217,7 +220,7 @@ app.put('/album/:id', async (req, res) =>{
     [req.body.Album_name, req.body.Cover_img, req.body.Created_at, req.params.id], 
     (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -229,7 +232,7 @@ app.put('/playlist/:id', async (req, res) =>{
     [req.body.Playlist_name, req.body.Cover_img, req.body.Created_at, req.params.id], 
     (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -240,7 +243,7 @@ app.delete('/playlist/:id', async (req, res) =>{
     mysqlCon.query(`DELETE FROM playlist_songs WHERE PlaylistId = ${req.params.id};
     DELETE FROM playlist WHERE PlaylistId = ${req.params.id};`, (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -264,7 +267,7 @@ app.delete('/artist/:id', async (req, res) =>{
     UPDATE playlist a
     SET a.Num_of_tracks = (SELECT COUNT(*) FROM playlist_songs WHERE a.PlaylistID = PlaylistID);`,[req.params.id], (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
@@ -283,7 +286,7 @@ app.delete('/song/:id', async (req, res) =>{
     SET a.Track_number = (@i := @i + 1)
     WHERE AlbumID = @album;`,[req.params.id], (error, results, fields) => {
         if (error) {
-            res.send(err.message);
+            res.send(error.message);
             throw error;
         };
         res.send(results);
