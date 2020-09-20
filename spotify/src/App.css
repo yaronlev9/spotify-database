@@ -1,0 +1,78 @@
+.App {
+  text-align: center;
+  background-color: black;
+}
+
+.NavBar {
+  text-align: left;
+  height: 30px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: black;
+  z-index: 1;
+}
+
+.homeBar {
+  position: absolute;
+  margin-left: calc(50% - 4em);
+}
+
+h1{
+  color: white;
+}
+
+.page {
+  position: relative;
+  text-align: left;
+  background-color: grey;
+  width: 90%;
+  height: 50%;
+  padding: 5%;
+}
+
+.info {
+  position: relative;
+  top: -200px;
+  left: 300px;
+}
+
+.songs {
+  margin-top: 50px;
+}
+.record {
+  width: 100%;
+  text-align: left;
+  border-bottom: white solid 1px;
+  margin-bottom: 20px;
+}
+
+.song > span {
+  font-size: 15px;
+}
+
+.title {
+  position: absolute;
+   left: 5%;
+}
+
+.name {
+  position: absolute;
+   left: 50%;
+}
+
+.length {
+  position: absolute;
+  right: 1%;
+}
+
+.albums {
+  margin-top: 10%;
+}
+
+.player {
+  position: absolute;
+  right:10%;
+  top:15%;
+}
+

@@ -56,7 +56,7 @@ app.get('/top_albums', (req, res) => {
 });
 
 app.get('/top_playlists', (req, res) => {
-    mysqlCon.query(`SELECT a.Playlist_name, a.Cover_img, a.Created_at, a.Upload_at, a.Num_of_tracks, GROUP_CONCAT(c.Title SEPARATOR ', ') as Songs
+    mysqlCon.query(`SELECT a.PlaylistID, a.Playlist_name, a.Cover_img, a.Created_at, a.Upload_at, a.Num_of_tracks, GROUP_CONCAT(c.Title SEPARATOR ', ') as Songs
     FROM spotify.playlist a
     INNER JOIN spotify.playlist_songs b 
     INNER JOIN spotify.song c 
@@ -72,7 +72,10 @@ app.get('/top_playlists', (req, res) => {
 });
 
 app.get('/song/:id', async (req, res) =>{
-    mysqlCon.query('SELECT * FROM song WHERE SongID = ?',[req.params.id], (error, results, fields) => {
+    mysqlCon.query(`SELECT a.SongID, a.Youtube_link, b.Album_name, c.Artist_name, a.Title, a.Length, a.Lyrics FROM song a
+    INNER JOIN Album b
+    INNER JOIN Artist c
+    WHERE a.SongID = ? AND b.AlbumID = a.AlbumID AND c.ArtistID = a.ArtistID;`,[req.params.id], (error, results, fields) => {
         if (error) {
             res.send(error.message);
             throw error;
@@ -102,11 +105,59 @@ app.get('/artist/:id', async (req, res) =>{
 });
 
 app.get('/playlist/:id', async (req, res) =>{
-    mysqlCon.query(`SELECT a.Playlist_name, a.Cover_img, a.Created_at, a.Upload_at, a.Num_of_tracks, GROUP_CONCAT(c.Title SEPARATOR ', ') as Songs
+    mysqlCon.query(`SELECT a.PlaylistID, a.Playlist_name, a.Cover_img, a.Created_at, a.Upload_at, a.Num_of_tracks, GROUP_CONCAT(c.Title SEPARATOR ', ') as Songs
     FROM spotify.playlist a
     INNER JOIN spotify.playlist_songs b 
     INNER JOIN spotify.song c 
     WHERE a.PlaylistID = b.PlaylistID AND b.SongID = c.SongID AND a.PlaylistID = ?;`,[req.params.id], (error, results, fields) => {
+        if (error) {
+            res.send(error.message);
+            throw error;
+        };
+        res.send(results);
+      });
+});
+
+app.get('/playlist_songs/:id', async (req, res) =>{
+    mysqlCon.query(`SELECT  DISTINCT a.SongID, a.Youtube_link, a.AlbumID, d.Artist_name, a.Title, a.Length, a.Created_at FROM song a
+    INNER JOIN playlist_songs b
+    INNER JOIN Artist d
+    WHERE a.SongID = b.SongID AND b.PlaylistID = ? AND a.ArtistID = d.ArtistID;`,[req.params.id], (error, results, fields) => {
+        if (error) {
+            res.send(error.message);
+            throw error;
+        };
+        res.send(results);
+      });
+});
+
+app.get('/album_songs/:id', async (req, res) =>{
+    mysqlCon.query(`SELECT  DISTINCT a.SongID, a.Youtube_link, a.AlbumID, d.Artist_name, a.Title, a.Length, a.Created_at FROM song a
+    INNER JOIN Artist d 
+    WHERE AlbumID = ? AND a.ArtistID = d.ArtistID;`,[req.params.id], (error, results, fields) => {
+        if (error) {
+            res.send(error.message);
+            throw error;
+        };
+        res.send(results);
+      });
+});
+
+app.get('/best_artist_songs/:id', async (req, res) =>{
+    mysqlCon.query(`SELECT * FROM song
+    WHERE ArtistID = ?
+    LIMIT 5;`,[req.params.id], (error, results, fields) => {
+        if (error) {
+            res.send(error.message);
+            throw error;
+        };
+        res.send(results);
+      });
+});
+
+app.get('/artist-albums/:id', async (req, res) =>{
+    mysqlCon.query(`SELECT * FROM album
+    WHERE ArtistID = ?;`,[req.params.id], (error, results, fields) => {
         if (error) {
             res.send(error.message);
             throw error;
