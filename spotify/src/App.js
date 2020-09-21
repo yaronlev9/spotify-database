@@ -17,7 +17,7 @@ function refresh(){
   return (
     <div className="App">
       <BrowserRouter>
-      <div className="NavBar" style={{backgroundColor: 'black', color:'green'}}><NavLink to="/" style={{color: 'green', 'textDecoration': 'none'}}><span>SPOTIFY</span></NavLink>
+      <div className="NavBar" style={{backgroundColor: 'black', color:'green'}}><NavLink to="/" style={{color: 'green', 'textDecoration': 'none'}}><span style={{fontSize:"20"}}>SPOTIFY</span></NavLink>
         <NavLink className= "homeBar" to="/home" style={{color: 'grey', 'textDecoration': 'none'}} activeStyle={{color: 'white'}} onClick={refresh}>HOME</NavLink>
       </div>
         <Switch>
