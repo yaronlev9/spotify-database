@@ -89,9 +89,9 @@ function Song_page(props) {
                         <div style ={{fontSize:"18px", position:"relative", left:"5%"}}>Album: {AlbumName}</div>
                         <div style ={{fontSize:"18px", position:"relative", left:"5%"}}>Duration: {Length}</div>
                     </span>
-                    <div className="player">
-                    <Player videoId={YoutubeLink} next={next}/>
-                    </div>
+                <div className="player">
+                <Player videoId={YoutubeLink} next={next}/>
+                </div>
                 </div>
                 <div className="songs">
                     {allSongs.map((item,i)=> 

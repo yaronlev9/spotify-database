@@ -7,8 +7,8 @@ class Player extends React.Component {
         }
     render() {
         const opts = {
-        height: '468',
-        width: '786',
+        height: '400',
+        width: '700',
         playerVars: {
             autoplay: 1,
         },

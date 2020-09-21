@@ -3,6 +3,7 @@ const PASS = process.env.PASSWORD;
 const express = require('express');
 var mysql = require('mysql');
 const app = express();
+app.use(express.static('build'));
 
 app.use(express.json());
 app.use(logger);
