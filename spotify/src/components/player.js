@@ -14,7 +14,7 @@ class Player extends React.Component {
         },
         };
  
-    return <YouTube videoId={this.props.videoId} opts={opts} onReady={this._onReady} />;
+    return <YouTube videoId={this.props.videoId} onEnd={this.props.next} opts={opts} onReady={this._onReady} />;
   }
 }
 
