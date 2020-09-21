@@ -52,7 +52,7 @@ INSERT INTO Song (SongID, Youtube_link, AlbumID, ArtistID, Title, Length, Track_
 VALUES (1, 'https://www.youtube.com/watch?v=K9fISloOznc&list=PLLFaXG8eSf2_nJ2QuMEsJOd3HimspKPV6',1,1,'Wake me up',247,0,'2013-01-22',now()),
 (2, 'https://www.youtube.com/watch?v=ALFBgVcU0i8&list=PLLFaXG8eSf2_nJ2QuMEsJOd3HimspKPV6&index=2',1,1,'You make me',233,1,'2013-01-22',now()),
 (3, 'https://www.youtube.com/watch?v=i5L9gHsqSQk',2,1,'Peace of Mind',180,0,'2019-01-12',now()),
-(4, 'https://www.youtube.com/watch?v=i5L9gHsqSQk',2,1,'Heaven',277,1,'2019-01-12',now()),
+(4, 'https://www.youtube.com/watch?v=fqzhtvLWefA&list=OLAK5uy_mo0wJh-LjbaTD5NsVO--RzKkToBnonkUw&index=2',2,1,'Heaven',304,1,'2019-01-12',now()),
 (5, 'https://www.youtube.com/watch?v=xQ04WbgI9rg',3,2,'All My Life',263,0,'2002-08-17',now()),
 (6, 'https://www.youtube.com/watch?v=ySlZdASmGCM',3,2,'Low',268,1,'2002-08-17',now()),
 (7, 'https://www.youtube.com/watch?v=OtRcYMV1DU8',4,2,'In Your Honor',230,0,'2005-06-13',now()),

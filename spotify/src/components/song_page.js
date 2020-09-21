@@ -69,9 +69,9 @@ function Song_page(props) {
         }
     }  
     function next(){
-        for (let song of allSongs){
-            if (song.SongID > SongID){
-                history.push(`/song/${song.SongID}?${origin}=${originID}`);
+        for (let index = 0; index < allSongs.length - 1; index++){
+            if (allSongs[index].SongID === SongID){
+                history.push(`/song/${allSongs[index + 1].SongID}?${origin}=${originID}`);
                 break;
             }
         }
