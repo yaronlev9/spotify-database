@@ -17,13 +17,13 @@ function Album_page(props) {
     const [ArtistName, setArtistName] = useState();
     const params = useParams();
     async function getAlbum(){
-        const play = await axios.get(`/album/${params.id}`).then((res) => res.data);
+        const play = await axios.get(`/api/albums/album/${params.id}`).then((res) => res.data);
         const created = play[0].Created_at.split('T')[0];
         setAlbumID(play[0].AlbumID);
         setAlbumName(play[0].Album_name);
         setAlbumImg(play[0].Cover_img);
         setAlbumCreated(created);
-        const songs = await axios.get(`/album_songs/${params.id}`).then((res) => res.data);
+        const songs = await axios.get(`/api/songs/album_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
         setArtistName(songs[0].Artist_name);
     }   

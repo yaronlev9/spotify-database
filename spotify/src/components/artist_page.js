@@ -34,13 +34,13 @@ function Artist_page(props) {
       };
 
     async function getArtist(){
-        const play = await axios.get(`/artist/${params.id}`).then((res) => res.data);
+        const play = await axios.get(`/api/artists/artist/${params.id}`).then((res) => res.data);
         setArtistID(play[0].ArtistID);
         setArtistName(play[0].Artist_name);
         setArtistImg(play[0].Cover_img);
-        const songs = await axios.get(`/best_artist_songs/${params.id}`).then((res) => res.data);
+        const songs = await axios.get(`/api/songs/best_artist_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
-        const albums = await axios.get(`/artist-albums/${params.id}`).then((res) => res.data);
+        const albums = await axios.get(`/api/albums/artist-albums/${params.id}`).then((res) => res.data);
         const allItems = [];
             albums.forEach((item) => {
                 const Component = Album;

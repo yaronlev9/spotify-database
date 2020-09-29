@@ -30,7 +30,7 @@ function Home() {
       };
     async function getAll(){
         for (let type of types){
-            const items = await axios.get(`/top_${type[0]}`).then((res) => res.data);
+            const items = await axios.get(`/api/${type[0]}/top_${type[0]}`).then((res) => res.data);
             const allItems = [];
             items.forEach((item) => {
                 const Component = type[1];

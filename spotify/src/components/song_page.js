@@ -31,7 +31,7 @@ function Song_page(props) {
     let artist = qParams.get('artist');
     let album = qParams.get('album');
     async function getSong(){
-        const play = await axios.get(`/song/${params.id}`).then((res) => res.data);
+        const play = await axios.get(`/api/songs/song/${params.id}`).then((res) => res.data);
         setSongID(play[0].SongID);
         setArtistName(play[0].Artist_name);
         setAlbumName(play[0].Album_name);
@@ -40,28 +40,28 @@ function Song_page(props) {
         setLyrics(play[0].Lyrics);
         setYoutubeLink(play[0].Youtube_link.split('?')[1].split('&')[0].split('=')[1]);
         if (playlist !== null){
-            const img = await axios.get(`/playlist/${playlist}`).then((res) => res.data);
+            const img = await axios.get(`/api/playlists/playlist/${playlist}`).then((res) => res.data);
             setOriginName(`playlist: ${img[0].Playlist_name}`);
             setImage(img[0].Cover_img);
-            const songs = await axios.get(`/playlist_songs/${playlist}`).then((res) => res.data);
+            const songs = await axios.get(`/api/songs/playlist_songs/${playlist}`).then((res) => res.data);
             setAllSongs(songs);
             setOrigin('playlist');
             setOriginID(playlist);
             return;
         }
         if (artist !== null){
-            const img = await axios.get(`/artist/${artist}`).then((res) => res.data);
+            const img = await axios.get(`/api/artists/artist/${artist}`).then((res) => res.data);
             setImage(img[0].Cover_img);
-            const songs = await axios.get(`/best_artist_songs/${artist}`).then((res) => res.data);
+            const songs = await axios.get(`/api/songs/best_artist_songs/${artist}`).then((res) => res.data);
             setAllSongs(songs);
             setOrigin('artist');
             setOriginID(artist);
             return;
         }
         if (album !== null){
-            const img = await axios.get(`/album/${album}`).then((res) => res.data);
+            const img = await axios.get(`/api/albums/album/${album}`).then((res) => res.data);
             setImage(img[0].Cover_img);
-            const songs = await axios.get(`/album_songs/${album}`).then((res) => res.data);
+            const songs = await axios.get(`/api/songs/album_songs/${album}`).then((res) => res.data);
             setAllSongs(songs);
             setOrigin('album');
             setOriginID(album);
@@ -86,7 +86,7 @@ function Song_page(props) {
                     <span className="info">
                         <div style ={{fontSize:"24px", position:"relative", left:"5%"}}>{Title}</div>
                         <div style ={{fontSize:"18px", position:"relative", left:"5%"}}>Artist: {ArtistName}</div>
-                        <div style ={{fontSize:"18px", position:"relative", left:"5%"}}>Album: {AlbumName}</div>
+                        <div style ={{width:"20%", fontSize:"18px", position:"relative", left:"5%"}}>Album: {AlbumName}</div>
                         <div style ={{fontSize:"18px", position:"relative", left:"5%"}}>Duration: {Length}</div>
                     </span>
                 <div className="player">

@@ -16,13 +16,13 @@ function Playlist_page(props) {
     const [playlistCreated, setPlaylistCreated] = useState();
     const params = useParams();
     async function getPlaylist(){
-        const play = await axios.get(`/playlist/${params.id}`).then((res) => res.data);
+        const play = await axios.get(`/api/playlists/playlist/${params.id}`).then((res) => res.data);
         const created = play[0].Created_at.split('T')[0];
         setPlaylistID(play[0].PlaylistID);
         setPlaylistName(play[0].Playlist_name);
         setPlaylistImg(play[0].Cover_img);
         setPlaylistCreated(created);
-        const songs = await axios.get(`/playlist_songs/${params.id}`).then((res) => res.data);
+        const songs = await axios.get(`/api/songs/playlist_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
     }   
 
