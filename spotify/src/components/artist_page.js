@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
+import network from '../services/network';
 import 'react-multi-carousel/lib/styles.css';
 import Album from './Album';
-import axios from 'axios';
 import '../App.css';
 
 function str_pad_left(string,pad,length) {
@@ -34,13 +34,13 @@ function Artist_page(props) {
       };
 
     async function getArtist(){
-        const play = await axios.get(`/api/artists/artist/${params.id}`).then((res) => res.data);
+        const play = await network.get(`/api/artists/artist/${params.id}`).then((res) => res.data);
         setArtistID(play[0].ArtistID);
         setArtistName(play[0].Artist_name);
         setArtistImg(play[0].Cover_img);
-        const songs = await axios.get(`/api/songs/best_artist_songs/${params.id}`).then((res) => res.data);
+        const songs = await network.get(`/api/songs/best_artist_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
-        const albums = await axios.get(`/api/albums/artist-albums/${params.id}`).then((res) => res.data);
+        const albums = await network.get(`/api/albums/artist-albums/${params.id}`).then((res) => res.data);
         const allItems = [];
             albums.forEach((item) => {
                 const Component = Album;
@@ -50,7 +50,10 @@ function Artist_page(props) {
 
     }   
 
-    useEffect( () => { getArtist()}, [])
+    useEffect( () => { getArtist()
+        const ArtistInterval = setInterval(getArtist, 60000);
+        return () => clearInterval(ArtistInterval);
+      }, []);
     return (
             <div>
                 <div className="page" style={{color:'white'}}>

@@ -18,6 +18,11 @@
   margin-left: calc(50% - 4em);
 }
 
+.loginBar {
+  position: absolute;
+  margin-left: calc(100% - 7em);
+}
+
 h1{
   color: white;
 }
@@ -74,5 +79,55 @@ h1{
   position: absolute;
   left:50%;
   top:13%;
+}
+
+.login {
+  background-color: white;
+  margin-top: 5%;
+  width: 15%;
+  height: 10%;
+  position: relative;
+  left: 43%;
+  padding-top: 3%;
+  padding-bottom: 3%;
+  border-color: coral;
+  border: 3px solid green;
+  background-color: grey;
+}
+
+.login > div {
+  margin-bottom: 3%;
+}
+
+.username, .password {
+  border: 2px solid black;
+  border-radius: 4px;
+
+}
+
+.submit {
+  display:inline-block;
+  padding:0.7em 1.7em;
+  margin:3% 0.3em 0.3em 0;
+  border-radius:0.2em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  font-weight:400;
+  color:#FFFFFF;
+  background-color:green;
+  box-shadow:inset 0 -0.6em 1em -0.35em rgba(0,0,0,0.17),inset 0 0.6em 2em -0.3em rgba(255,255,255,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
+  text-align:center;
+  position:relative;
+}
+.submit:active{
+  box-shadow:inset 0 0.6em 2em -0.3em rgba(0,0,0,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
+}
+
+@media all and (max-width:30em){
+ .submit{
+  display:block;
+  margin:0.4em auto;
+  }
 }
 

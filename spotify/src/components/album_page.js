@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
-import axios from 'axios';
+import network from '../services/network';
 import '../App.css';
 
 function str_pad_left(string,pad,length) {
@@ -17,18 +17,21 @@ function Album_page(props) {
     const [ArtistName, setArtistName] = useState();
     const params = useParams();
     async function getAlbum(){
-        const play = await axios.get(`/api/albums/album/${params.id}`).then((res) => res.data);
+        const play = await network.get(`/api/albums/album/${params.id}`).then((res) => res.data);
         const created = play[0].Created_at.split('T')[0];
         setAlbumID(play[0].AlbumID);
         setAlbumName(play[0].Album_name);
         setAlbumImg(play[0].Cover_img);
         setAlbumCreated(created);
-        const songs = await axios.get(`/api/songs/album_songs/${params.id}`).then((res) => res.data);
+        const songs = await network.get(`/api/songs/album_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
         setArtistName(songs[0].Artist_name);
     }   
 
-    useEffect( () => { getAlbum()}, [])
+    useEffect( () => { getAlbum()
+        const AlbumInterval = setInterval(getAlbum, 60000);
+        return () => clearInterval(AlbumInterval);
+      }, []);
     return (
             <div>
                 <div className="page" style={{color:'white'}}>

@@ -6,7 +6,7 @@ import Artist from './Artist';
 import Album from './Album';
 import Playlist from './Playlist';
 import Song from './Song';
-import axios from 'axios';
+import network from '../services/network';
 
 function Home() {
     const [artistList, setArtistList] = useState([]);
@@ -30,7 +30,7 @@ function Home() {
       };
     async function getAll(){
         for (let type of types){
-            const items = await axios.get(`/api/${type[0]}/top_${type[0]}`).then((res) => res.data);
+            const items = await network.get(`/api/${type[0]}/top_${type[0]}`).then((res) => res.data);
             const allItems = [];
             items.forEach((item) => {
                 const Component = type[1];
@@ -39,7 +39,10 @@ function Home() {
             type[2](allItems);
         }
     }
-    useEffect( () => { getAll()}, [])
+    useEffect( () => { getAll()
+      const homeInterval = setInterval(getAll, 60000);
+      return () => clearInterval(homeInterval);
+    }, []);
 
   
 

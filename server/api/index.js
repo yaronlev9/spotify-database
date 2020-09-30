@@ -1,13 +1,12 @@
 const { Router } = require('express');
+const checkToken = require('../middleware/auth');
 
 const router = Router();
 
+router.use('/login', require('./login'));
 
-router.get('/', (req, res) => {
-    res.send('Hello World!')
-  })
-router.use('/songs', require('./song'));
-router.use('/albums', require('./album'));
-router.use('/artists', require('./artist'));
-router.use('/playlists', require('./playlist'));
+router.use('/artists', checkToken, require('./artist'));
+router.use('/albums', checkToken, require('./album'));
+router.use('/songs', checkToken, require('./song'));
+router.use('/playlists', checkToken, require('./playlist'));
 module.exports = router;
