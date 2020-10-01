@@ -7,13 +7,19 @@ import Album from './Album';
 import Playlist from './Playlist';
 import Song from './Song';
 import network from '../services/network';
+import {useHistory} from 'react-router-dom';
 
-function Home() {
+function Home(props) {
     const [artistList, setArtistList] = useState([]);
     const [albumList, setAlbumList] = useState([]);
     const [playlistList, setPlaylistList] = useState([]);
     const [songList, setSongList] = useState([]);
     const types = [['artists', Artist, setArtistList], ['albums', Album, setAlbumList], ['playlists', Playlist, setPlaylistList], ['songs', Song, setSongList]] ;
+    const history = useHistory();
+    const token = localStorage.getItem('token');
+    if (token === null) {
+      history.push('/login')
+    }
     const responsive = {
         superLargeDesktop: {
           breakpoint: { max: 4000, min: 3000 },
@@ -42,7 +48,7 @@ function Home() {
     useEffect( () => { getAll()
       const homeInterval = setInterval(getAll, 60000);
       return () => clearInterval(homeInterval);
-    }, []);
+    });
 
   
 

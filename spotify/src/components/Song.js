@@ -7,9 +7,7 @@ function Song(props) {
   return (
         <div className="song" style={{color:'white'}}>
           <Link to={path}>
-          <img style={{'borderRadius': '4%'}} src={imgSource}
-
-            width="256" height="256"></img>
+          <img style={{'borderRadius': '4%'}} src={imgSource} width="256" height="256" alt={props.obj.Title}></img>
           </Link>
           <br/>
           {props.obj.Title}

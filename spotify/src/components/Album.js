@@ -6,7 +6,7 @@ function Album(props) {
   return (
         <div className="album" style={{color:'white'}}>
           <Link to={path}>
-          <img style={{'borderRadius': '4%'}} src={props.obj.Cover_img} width="256" height="256"></img>
+          <img alt={props.obj.Album_name} style={{'borderRadius': '4%'}} src={props.obj.Cover_img} width="256" height="256"></img>
           </Link>
           <br/>
           {props.obj.Album_name}

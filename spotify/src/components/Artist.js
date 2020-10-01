@@ -6,7 +6,7 @@ function Artist(props) {
   return (
         <div style={{color:'white'}} className="artist">
           <Link to={path}>
-          <img style={{'borderRadius': '50%'}} src={props.obj.Cover_img} width="256" height="256"></img>
+          <img alt={props.obj.Artist_name} style={{'borderRadius': '50%'}} src={props.obj.Cover_img} width="256" height="256"></img>
           </Link>
           <br/>
           {props.obj.Artist_name}

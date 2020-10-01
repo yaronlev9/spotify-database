@@ -5,7 +5,7 @@ import Album from './components/album_page';
 import Artist from './components/artist_page';
 import Song from './components/song_page';
 import Login from './components/login_page';
-import network from './services/network';
+// import network from './services/network';
 
 import {BrowserRouter, Switch, Route, NavLink} from 'react-router-dom';
 import './App.css';
@@ -27,12 +27,14 @@ function App() {
 
   const check = () => {
     const token = localStorage.getItem('token');
-    if (token !== undefined) {
+    if (token !== null) {
       setIsLogged(true);
+      return true;
     }
+    return false;
   }
 
-  useEffect( () => {check()}, []);
+  useEffect( () => {check()});
   
 
   return (
@@ -56,30 +58,34 @@ function App() {
             <Login toLog={setLogin}/>
           )}
         />
-        <Route exact path="/home" component={Home}/>
+        <Route exact path="/home" 
+          render={(props) =>(
+            <Home/>
+          )}
+        />
         <Route exact path="/playlist/:id" 
             render={(props) =>(
-              <Playlist match={props.match} location={props.location} history={props.history} />
+              <Playlist match={props.match} location={props.location} history={props.history}/>
             )}
           />
         <Route exact path="/album/:id" 
             render={(props) =>(
-              <Album match={props.match} location={props.location} history={props.history} />
+              <Album match={props.match} location={props.location} history={props.history}/>
             )}
           />
         <Route exact path="/artist/:id" 
             render={(props) =>(
-              <Artist match={props.match} location={props.location} history={props.history} />
+              <Artist match={props.match} location={props.location} history={props.history}/>
             )}
           />
         <Route exact path="/song/:id?" 
             render={(props) =>(
-              <Song match={props.match} location={props.location} history={props.history} />
+              <Song match={props.match} location={props.location} history={props.history}/>
             )}
           />
         <Route exact path="/song/:id" 
             render={(props) =>(
-              <Song match={props.match} location={props.location} history={props.history} />
+              <Song match={props.match} location={props.location} history={props.history}/>
             )}
           />
         <Route>

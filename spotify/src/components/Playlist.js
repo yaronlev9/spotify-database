@@ -6,7 +6,7 @@ function Playlist(props) {
   return (
         <div className="playlist" style={{color:'white'}}>
           <Link to={path}>
-          <img style={{'borderRadius': '4%'}} src={props.obj.Cover_img} width="256" height="256"></img>
+          <img alt={props.obj.Playlist_name} style={{'borderRadius': '4%'}} src={props.obj.Cover_img} width="256" height="256"></img>
           </Link>          <br/>
           {props.obj.Playlist_name}
         </div>

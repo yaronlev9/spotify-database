@@ -9,7 +9,7 @@ export default (props) => {
   const [error, setError] = useState('')
   const history = useHistory();
   useEffect( () => {   props.toLog(false);
-  }, []);
+  });
 
   const onSubmit = async () => {
     const response = await network.post('api/login', {

@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
   }
   let token = jwt.sign({username: username},
     process.env.JWT_SECRET,
-    { expiresIn: '5s' // expires in 1 hours
+    { expiresIn: '1h' // expires in 1 hours
     }
   );
     return res.json({
