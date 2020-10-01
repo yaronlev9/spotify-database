@@ -58,7 +58,7 @@ function Artist_page(props) {
     useEffect( () => { getArtist()
         const ArtistInterval = setInterval(getArtist, 60000);
         return () => clearInterval(ArtistInterval);
-      });
+      }, []);
     return (
             <div>
                 <div className="page" style={{color:'white'}}>

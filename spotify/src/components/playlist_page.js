@@ -34,7 +34,7 @@ function Playlist_page(props) {
     useEffect( () => { getPlaylist()
         const PlaylistInterval = setInterval(getPlaylist, 60000);
         return () => clearInterval(PlaylistInterval);
-      });
+      }, []);
     
     return (
             <div>

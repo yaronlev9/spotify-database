@@ -48,7 +48,7 @@ function Home(props) {
     useEffect( () => { getAll()
       const homeInterval = setInterval(getAll, 60000);
       return () => clearInterval(homeInterval);
-    });
+    }, []);
 
   
 

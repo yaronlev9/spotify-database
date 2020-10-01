@@ -36,7 +36,7 @@ function Album_page(props) {
     useEffect( () => { getAlbum()
         const AlbumInterval = setInterval(getAlbum, 60000);
         return () => clearInterval(AlbumInterval);
-      });
+      }, []);
     return (
             <div>
                 <div className="page" style={{color:'white'}}>
