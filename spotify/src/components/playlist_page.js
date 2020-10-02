@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import network from '../services/network';
 import '../App.css';
 
@@ -15,11 +15,7 @@ function Playlist_page(props) {
     const [playlistImg, setPlaylistImg] = useState();
     const [playlistCreated, setPlaylistCreated] = useState();
     const params = useParams();
-    const history = useHistory();
-    const token = localStorage.getItem('token');
-    if (token === null) {
-      history.push('/login')
-    }
+    
     async function getPlaylist(){
         const play = await network.get(`/api/playlists/playlist/${params.id}`).then((res) => res.data);
         const created = play[0].Created_at.split('T')[0];

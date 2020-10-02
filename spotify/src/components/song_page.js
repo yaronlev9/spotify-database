@@ -25,10 +25,7 @@ function Song_page(props) {
     const location = useLocation();
     const params = useParams();
     const history = useHistory();
-    const token = localStorage.getItem('token');
-    if (token === null) {
-      history.push('/login')
-    }
+
     const qParams = new URLSearchParams(location.search);
     let playlist = qParams.get('playlist');
     let artist = qParams.get('artist');

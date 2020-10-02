@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import network from '../services/network';
 import '../App.css';
 
@@ -16,11 +16,6 @@ function Album_page(props) {
     const [AlbumCreated, setAlbumCreated] = useState();
     const [ArtistName, setArtistName] = useState();
     const params = useParams();
-    const history = useHistory();
-    const token = localStorage.getItem('token');
-    if (token === null) {
-      history.push('/login')
-    }
     async function getAlbum(){
         const play = await network.get(`/api/albums/album/${params.id}`).then((res) => res.data);
         const created = play[0].Created_at.split('T')[0];

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
-import {useParams, useHistory} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import network from '../services/network';
 import 'react-multi-carousel/lib/styles.css';
@@ -18,11 +18,6 @@ function Artist_page(props) {
     const [ArtistImg, setArtistImg] = useState();
     const [ArtistName, setArtistName] = useState();
     const params = useParams();
-    const history = useHistory();
-    const token = localStorage.getItem('token');
-    if (token === null) {
-      history.push('/login')
-    }
     const responsive = {
         superLargeDesktop: {
           breakpoint: { max: 4000, min: 3000 },

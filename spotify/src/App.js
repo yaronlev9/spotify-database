@@ -5,8 +5,6 @@ import Album from './components/album_page';
 import Artist from './components/artist_page';
 import Song from './components/song_page';
 import Login from './components/login_page';
-// import network from './services/network';
-
 import {BrowserRouter, Switch, Route, NavLink} from 'react-router-dom';
 import './App.css';
 
@@ -58,36 +56,36 @@ function App() {
             <Login toLog={setLogin}/>
           )}
         />
-        <Route exact path="/home" 
+        {isLogged && <Route exact path="/home" 
           render={(props) =>(
             <Home/>
           )}
-        />
-        <Route exact path="/playlist/:id" 
+        />}
+        {isLogged && <Route exact path="/playlist/:id" 
             render={(props) =>(
               <Playlist match={props.match} location={props.location} history={props.history}/>
             )}
-          />
-        <Route exact path="/album/:id" 
+          />}
+        {isLogged && <Route exact path="/album/:id" 
             render={(props) =>(
               <Album match={props.match} location={props.location} history={props.history}/>
             )}
-          />
-        <Route exact path="/artist/:id" 
+          />}
+        {isLogged && <Route exact path="/artist/:id" 
             render={(props) =>(
               <Artist match={props.match} location={props.location} history={props.history}/>
             )}
-          />
-        <Route exact path="/song/:id?" 
+          />}
+        {isLogged && <Route exact path="/song/:id?" 
             render={(props) =>(
               <Song match={props.match} location={props.location} history={props.history}/>
             )}
-          />
-        <Route exact path="/song/:id" 
+          />}
+        {isLogged && <Route exact path="/song/:id" 
             render={(props) =>(
               <Song match={props.match} location={props.location} history={props.history}/>
             )}
-          />
+          />}
         <Route>
               <h1 style={{marginTop:"20%"}}>
                 ERROR 404, Page Not Found!
