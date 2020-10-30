@@ -6,6 +6,7 @@ import network from '../services/network';
 import 'react-multi-carousel/lib/styles.css';
 import Album from './Album';
 import '../App.css';
+import mixpanel from '../AnalyticsManager'
 
 function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
@@ -38,6 +39,7 @@ function Artist_page(props) {
         setArtistID(play[0].ArtistID);
         setArtistName(play[0].Artist_name);
         setArtistImg(play[0].Cover_img);
+        mixpanel.track("viewed artist", {"artist name": play[0].Artist_name, "user": props.user}); 
         const songs = await network.get(`/api/songs/best_artist_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
         const albums = await network.get(`/api/albums/artist-albums/${params.id}`).then((res) => res.data);
@@ -51,9 +53,10 @@ function Artist_page(props) {
     }   
 
     useEffect( () => { getArtist()
-        const ArtistInterval = setInterval(getArtist, 60000);
+        const ArtistInterval = setInterval(getArtist, 1800000);
         return () => clearInterval(ArtistInterval);
       }, []);
+
     return (
             <div>
                 <div className="page" style={{color:'white'}}>

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import network from '../services/network';
 import '../App.css';
+import mixpanel from '../AnalyticsManager'
 
 function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
@@ -23,13 +24,14 @@ function Album_page(props) {
         setAlbumName(play[0].Album_name);
         setAlbumImg(play[0].Cover_img);
         setAlbumCreated(created);
+        mixpanel.track("viewed album", {"Album name": play[0].Album_name, "user": props.user}); 
         const songs = await network.get(`/api/songs/album_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
         setArtistName(songs[0].Artist_name);
     }   
 
     useEffect( () => { getAlbum()
-        const AlbumInterval = setInterval(getAlbum, 60000);
+        const AlbumInterval = setInterval(getAlbum, 1800000);
         return () => clearInterval(AlbumInterval);
       }, []);
     return (

@@ -27,7 +27,7 @@ function Home(props) {
           breakpoint: { max: 464, min: 0 },
           items: 1
         }
-      };
+      }
     async function getAll(){
         for (let type of types){
             const items = await network.get(`/api/${type[0]}/top_${type[0]}`).then((res) => res.data);

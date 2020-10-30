@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import network from '../services/network';
 import {useHistory} from 'react-router-dom';
 import '../App.css';
-
+import mixpanel from '../AnalyticsManager'
 export default (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,8 +18,10 @@ export default (props) => {
     });
     if (response.data && response.data.success && response.data.token) {
       localStorage.setItem('token', response.data.token);
-      props.toLog(true);
+      localStorage.setItem('user', username);
+      props.toLog(true, username);
       history.push(`/home`);
+      mixpanel.track("logged in", {"user": username}); 
 
     } else {
       console.log(response.response.data.errorMessage)

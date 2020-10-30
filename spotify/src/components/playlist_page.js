@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {useParams} from 'react-router-dom';
 import network from '../services/network';
 import '../App.css';
+import mixpanel from '../AnalyticsManager'
 
 function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
@@ -23,12 +24,13 @@ function Playlist_page(props) {
         setPlaylistName(play[0].Playlist_name);
         setPlaylistImg(play[0].Cover_img);
         setPlaylistCreated(created);
+        mixpanel.track("viewed playlist", {"playlist name": play[0].Playlist_name, "user": props.user}); 
         const songs = await network.get(`/api/songs/playlist_songs/${params.id}`).then((res) => res.data);
         setAllSongs(songs);
     }   
 
     useEffect( () => { getPlaylist()
-        const PlaylistInterval = setInterval(getPlaylist, 60000);
+        const PlaylistInterval = setInterval(getPlaylist, 1800000);
         return () => clearInterval(PlaylistInterval);
       }, []);
     

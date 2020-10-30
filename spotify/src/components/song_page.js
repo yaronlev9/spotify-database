@@ -4,7 +4,7 @@ import {useLocation, useParams, useHistory} from 'react-router-dom';
 import network from '../services/network';
 import '../App.css';
 import Player from './player';
-
+import mixpanel from '../AnalyticsManager'
 
 function str_pad_left(string,pad,length) {
     return (new Array(length+1).join(pad)+string).slice(-length);
@@ -76,8 +76,12 @@ function Song_page(props) {
         }
     }
 
+    function  runMixpanel(){
+        mixpanel.track("played song", {"song name": Title, "user": props.user}); 
+    }
+
     useEffect( () => { getSong()
-        const SongInterval = setInterval(getSong, 60000);
+        const SongInterval = setInterval(getSong, 1800000);
         return () => clearInterval(SongInterval);
       }, [location]);
     
@@ -93,7 +97,7 @@ function Song_page(props) {
                         <div style ={{fontSize:"18px", position:"relative", left:"5%"}}>Duration: {Length}</div>
                     </span>
                 <div className="player">
-                <Player videoId={YoutubeLink} next={next}/>
+                <Player videoId={YoutubeLink} next={next} mixpanel={runMixpanel}/>
                 </div>
                 </div>
                 <div className="songs">

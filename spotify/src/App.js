@@ -5,39 +5,60 @@ import Album from './components/album_page';
 import Artist from './components/artist_page';
 import Song from './components/song_page';
 import Login from './components/login_page';
-import {BrowserRouter, Switch, Route, NavLink} from 'react-router-dom';
+import {useHistory, Switch, Route, NavLink} from 'react-router-dom';
 import './App.css';
+import mixpanel from './AnalyticsManager'
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
+  const [userName, setUserName] = useState();
+  const history = useHistory() 
   function refresh(){
     window.scrollTo(0, 0);
   }
 
-  function setLogin(value){
+  function setLogin(value, userName){
     setIsLogged(value);
+    setUserName(userName);
   }
 
   function removeToken(){
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setIsLogged(false);
+    mixpanel.track("logged out", {"user": userName}); 
+    setUserName();
+
   }
 
   const check = () => {
     const token = localStorage.getItem('token');
-    if (token !== null) {
+    const user = localStorage.getItem('user');
+    if (token !== null && user !== null) {
       setIsLogged(true);
+      setUserName(user);
       return true;
     }
     return false;
   }
 
-  useEffect( () => {check()});
+  useEffect( () => {
+    mixpanel.track("entered app");
+    check()
+  });
   
+  useEffect(() => {
+    return history.listen((location) => { 
+      if (location.pathname === '/home'){
+        mixpanel.track("entered home page", {"user": userName}); 
+
+      }
+       mixpanel.track("changed url", {"url": location.pathname}); 
+    }) 
+ },[history]) 
 
   return (
     <div className="App">
-      <BrowserRouter>
       <div className="NavBar" style={{backgroundColor: 'black', color:'green'}}><NavLink to="/" style={{color: 'green', 'textDecoration': 'none'}}><span style={{fontSize:"20"}}>SPOTIFY</span></NavLink>
         {
         isLogged && <NavLink className= "homeBar" to="/home" style={{color: 'grey', 'textDecoration': 'none'}} activeStyle={{color: 'white'}} onClick={refresh}>HOME</NavLink>
@@ -63,27 +84,27 @@ function App() {
         />}
         {isLogged && <Route exact path="/playlist/:id" 
             render={(props) =>(
-              <Playlist match={props.match} location={props.location} history={props.history}/>
+              <Playlist match={props.match} location={props.location} history={props.history} user={userName}/>
             )}
           />}
         {isLogged && <Route exact path="/album/:id" 
             render={(props) =>(
-              <Album match={props.match} location={props.location} history={props.history}/>
+              <Album match={props.match} location={props.location} history={props.history} user={userName}/>
             )}
           />}
         {isLogged && <Route exact path="/artist/:id" 
             render={(props) =>(
-              <Artist match={props.match} location={props.location} history={props.history}/>
+              <Artist match={props.match} location={props.location} history={props.history} user={userName}/>
             )}
           />}
         {isLogged && <Route exact path="/song/:id?" 
             render={(props) =>(
-              <Song match={props.match} location={props.location} history={props.history}/>
+              <Song match={props.match} location={props.location} history={props.history} user={userName}/>
             )}
           />}
         {isLogged && <Route exact path="/song/:id" 
             render={(props) =>(
-              <Song match={props.match} location={props.location} history={props.history}/>
+              <Song match={props.match} location={props.location} history={props.history} user={userName}/>
             )}
           />}
         <Route>
@@ -92,7 +113,6 @@ function App() {
               </h1>
           </Route>
         </Switch>
-      </BrowserRouter>
     </div>
   );
 }
