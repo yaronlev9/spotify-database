@@ -18,39 +18,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchPage(props) {
   const [songs, setSongs] = useState([]);
-  const [albums, setAlbums] = useState([]);
-  const [artists, setArtists] = useState([]);
-  const [playlists, setPlaylists] = useState([]);
 
   async function getData(){
       let items = await network.get(`/api/search/songs/${props.search}`).then((res) => res.data);
       if (items){
-        setSongs(items.slice(0,3));
+        setSongs(items);
       }
       else{
         setSongs([])
-      }
-      items = await network.get(`/api/search/albums/${props.search}`).then((res) => res.data);
-      if (items){
-        setAlbums(items.slice(0,3));
-      }
-      else{
-        setAlbums([])
-      }
-      items = await network.get(`/api/search/artists/${props.search}`).then((res) => res.data);
-      console.log(items)
-      if (items){
-        setArtists(items.slice(0,3));
-      }
-      else{
-        setArtists([])
-      }
-      items = await network.get(`/api/search/playlists/${props.search}`).then((res) => res.data);
-      if (items){
-        setPlaylists(items.slice(0,3));
-      }
-      else{
-        setPlaylists([])
       }
   }
 
@@ -63,18 +38,6 @@ export default function SearchPage(props) {
   return (
     <div>
       <div className={classes.root}>
-      <Link style={{color:'white'}} to={`/songs`}>
-      <Button className='searchBtn' variant="contained">Songs</Button>
-      </Link>
-      <Link style={{color:'white'}} to={`/albums`}>
-      <Button className='searchBtn' variant="contained">Albums</Button>
-      </Link>
-      <Link style={{color:'white'}} to={`/artists`}>
-      <Button className='searchBtn' variant="contained">Artists</Button>
-      </Link>
-      <Link style={{color:'white'}} to={`/playlists`}>
-      <Button className='searchBtn' variant="contained">Playlists</Button>
-      </Link>
     </div>
     {songs.length !== 0 &&<div className="songs" style={{color:"white"}}> 
     <div style={{textAlign:'left', margin:'15px'}}>Songs</div>
@@ -88,55 +51,6 @@ export default function SearchPage(props) {
               <span className="length">{str_pad_left(Math.floor(item._source.Length/60),'0',2)+':'+str_pad_left(item._source.Length - (Math.floor(item._source.Length/60)) * 60,'0',2)}</span>
           </Link>
       </div>)}
-      <Link style={{color:'white'}} to={`/songs`}>
-      <Button className='showBtn' variant="contained">Show All</Button>
-      </Link>
-      </div>}
-      {albums.length !== 0 &&<div className="songs" style={{color:"white"}}> 
-    <div style={{textAlign:'left', margin:'15px'}}>Albums</div>
-    {albums.map((item,i)=> 
-      <div className="record" key={i}>
-          <Link style={{color:'white'}} to={`/album/${item._source.AlbumID}`}>
-              <img alt={item._source.Album_name} src={item._source.Cover_img}
-              width="20" height="20"></img>
-              <span className="title">{i + 1}. {item._source.Album_name}</span>
-              <span className="name">created at: {item._source.Created_at.split(' ')[0]}</span>
-              <span className="length">num of tracks: {item._source.Num_of_tracks}</span>
-          </Link>
-      </div>)}
-      <Link style={{color:'white'}} to={`/albums`}>
-      <Button className='showBtn' variant="contained">Show All</Button>
-      </Link>
-      </div>}
-      {artists.length !== 0 &&<div className="songs" style={{color:"white"}}> 
-      <div style={{textAlign:'left', margin:'15px'}}>Artists</div>
-    {artists.map((item,i)=> 
-      <div className="record" key={i}>
-          <Link style={{color:'white'}} to={`/artist/${item._source.ArtistID}`}>
-              <img alt={item._source.Artist_name} src={item._source.Cover_img} 
-              width="20" height="20"></img>
-              <span className="title">{i + 1}. {item._source.Artist_name}</span>
-          </Link>
-      </div>)}
-      <Link style={{color:'white'}} to={`/artists`}>
-      <Button className='showBtn' variant="contained">Show All</Button>
-      </Link>
-      </div>}
-      {playlists.length !== 0 &&<div className="songs" style={{color:"white"}}> 
-      <div style={{textAlign:'left', margin:'15px'}}>Playlists</div>
-    {playlists.map((item,i)=> 
-      <div className="record" key={i}>
-          <Link style={{color:'white'}} to={`/playlist/${item._source.PlaylistID}`}>
-              <img alt={item._source.Playlist_name} src={item._source.Cover_img}
-              width="20" height="20"></img>
-              <span className="title">{i + 1}. {item._source.Playlist_name}</span>
-              <span className="name">created at: {item._source.Created_at.split(' ')[0]}</span>
-              <span className="length">num of tracks: {item._source.Num_of_tracks}</span>
-          </Link>
-      </div>)}
-      <Link style={{color:'white'}} to={`/playlists`}>
-      <Button className='showBtn' variant="contained">Show All</Button>
-      </Link>
       </div>}
     </div>
   );

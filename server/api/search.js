@@ -16,7 +16,9 @@ const client = new Client({
 
 router.get('/playlists/:search', async (req, res) => {
     client.search({
-        index: 'playlists',
+        index: 'allplaylists',
+        from: 0,
+        size: 100,
         body: {
             query: {
                 wildcard: {
@@ -41,6 +43,8 @@ router.get('/artists/:search', async (req, res) => {
     console.log(req.params.search)
     client.search({
         index: 'artists',
+        from: 0,
+        size: 100,
         body: {
             query: {
                 wildcard: {
@@ -64,6 +68,8 @@ router.get('/artists/:search', async (req, res) => {
 router.get('/songs/:search', async (req, res) => {
     client.search({
         index: 'songs',
+        from: 0,
+        size: 100,
         body: {
             query: {
                 wildcard: {
@@ -87,6 +93,8 @@ router.get('/songs/:search', async (req, res) => {
 router.get('/albums/:search', async (req, res) => {
     client.search({
         index: 'albums',
+        from: 0,
+        size: 100,
         body: {
             query: {
                 wildcard: {

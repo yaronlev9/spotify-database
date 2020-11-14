@@ -10,6 +10,10 @@ import './App.css';
 import mixpanel from './AnalyticsManager'
 import AppBar from './components/App_bar'
 import SearchPage from './components/search_page'
+import SearchSongs from './components/search_songs'
+import SearchAlbums from './components/search_albums'
+import SearchArtists from './components/search_artists'
+import SearchPlaylists from './components/search_playlists'
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
@@ -83,6 +87,26 @@ function App() {
         {isLogged && <Route exact path="/search"
           render={(props) =>(
             <SearchPage search={search}/>
+          )}
+        />}
+        {isLogged && <Route exact path="/songs"
+          render={(props) =>(
+            <SearchSongs search={search}/>
+          )}
+        />}
+        {isLogged && <Route exact path="/albums"
+          render={(props) =>(
+            <SearchAlbums search={search}/>
+          )}
+        />}
+        {isLogged && <Route exact path="/artists"
+          render={(props) =>(
+            <SearchArtists search={search}/>
+          )}
+        />}
+        {isLogged && <Route exact path="/playlists"
+          render={(props) =>(
+            <SearchPlaylists search={search}/>
           )}
         />}
         {isLogged && <Route exact path="/home" 
