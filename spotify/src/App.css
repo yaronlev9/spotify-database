@@ -15,12 +15,22 @@
 
 .homeBar {
   position: absolute;
-  margin-left: calc(50% - 4em);
+  margin-left: calc(50% - 13em);
+  margin-bottom: 10px;
+  top: 15px;
 }
 
 .loginBar {
   position: absolute;
-  margin-left: calc(100% - 7em);
+  margin-left: calc(100% - 18em);
+  top: 15px;
+}
+
+.titleBar {
+  color: green; 
+  text-decoration: none;
+  background-color: black;
+  padding: 20px;
 }
 
 h1{
@@ -131,3 +141,18 @@ h1{
   }
 }
 
+.searchBtn{
+  position: absolute;
+  top: 80px;
+  color: black;
+}
+
+.showBtn{
+  color: white;
+  background-color: black;
+}
+
+.songs{
+  position: relative;
+  margin-top:100px;
+}

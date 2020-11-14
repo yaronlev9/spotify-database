@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^7.10.0",
     "dotenv": "^8.2.0",
+    "elasticsearch": "^16.7.1",
     "express": "^4.17.1",
     "json-web-token": "^3.2.0",
     "jsonwebtoken": "^8.5.1",

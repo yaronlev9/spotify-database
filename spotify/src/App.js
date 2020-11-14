@@ -8,15 +8,28 @@ import Login from './components/login_page';
 import {useHistory, Switch, Route, NavLink} from 'react-router-dom';
 import './App.css';
 import mixpanel from './AnalyticsManager'
+import AppBar from './components/App_bar'
+import SearchPage from './components/search_page'
 
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState();
+  const [search, setSearch] = useState('');
+
   const history = useHistory() 
   function refresh(){
     window.scrollTo(0, 0);
   }
 
+  function toSearch(value){
+    if (value === ''){
+      setSearch(value);
+      history.push("/home");
+      return;
+    }
+    setSearch(value);
+    history.push("/search");
+  }
   function setLogin(value, userName){
     setIsLogged(value);
     setUserName(userName);
@@ -59,17 +72,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="NavBar" style={{backgroundColor: 'black', color:'green'}}><NavLink to="/" style={{color: 'green', 'textDecoration': 'none'}}><span style={{fontSize:"20"}}>SPOTIFY</span></NavLink>
-        {
-        isLogged && <NavLink className= "homeBar" to="/home" style={{color: 'grey', 'textDecoration': 'none'}} activeStyle={{color: 'white'}} onClick={refresh}>HOME</NavLink>
-        }
-        {
-        isLogged && <NavLink className= "loginBar" to="/" style={{color: 'grey', 'textDecoration': 'none'}} activeStyle={{color: 'white'}} onClick={removeToken}>Logout</NavLink>
-        }
-        {
-        !isLogged && <NavLink className= "loginBar" to="/login" style={{color: 'grey', 'textDecoration': 'none'}} activeStyle={{color: 'white'}}>Login</NavLink>
-        }
-        </div>
+        <AppBar isLogged = {isLogged} refresh = {refresh} removeToken = {removeToken} onChange={(e) => toSearch(e)}/>
         <Switch>
         <Route exact path="/"><h1 style={{color:'white', 'marginTop': '20%'}}>Welcome to Spotify!!!</h1></Route>
         <Route exact path="/login"
@@ -77,6 +80,11 @@ function App() {
             <Login toLog={setLogin}/>
           )}
         />
+        {isLogged && <Route exact path="/search"
+          render={(props) =>(
+            <SearchPage search={search}/>
+          )}
+        />}
         {isLogged && <Route exact path="/home" 
           render={(props) =>(
             <Home/>

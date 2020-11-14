@@ -9,4 +9,5 @@ router.use('/artists', checkToken, require('./artist'));
 router.use('/albums', checkToken, require('./album'));
 router.use('/songs', checkToken, require('./song'));
 router.use('/playlists', checkToken, require('./playlist'));
+router.use('/search', checkToken, require('./search'));
 module.exports = router;
