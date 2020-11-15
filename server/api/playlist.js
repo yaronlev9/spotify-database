@@ -1,5 +1,16 @@
 const { Router } = require('express');
 const { Playlist } = require('../models');
+const { Client } = require('@elastic/elasticsearch');
+
+const client = new Client({
+    cloud: {
+      id: 'name:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyQxMzc2NDlhODM5NTk0ZTczOGRiN2JkZThjODNkZTVkNyRmNGIwNDNjMGM1NGE0ZDM0ODgxY2MyMDE3ZTg5ZTE1Zg==',
+    },
+    auth: {
+      username: 'elastic',
+      password: 'O0yKjai98EckDgHCuC8hxYmK'
+    }
+  });
 
 const router = Router();
 router.get('/top_playlists', async (req, res) => {
@@ -29,6 +40,15 @@ router.get('/playlist/:id', async (req, res) => {
   });
 
 router.post('/playlist', async (req, res) => {
+    client.index({
+        index: 'playlists',
+        body: {Playlist_name: req.body.PlaylistName,
+            Cover_img: req.body.CoverImg,
+            Created_at: req.body.CreatedAt,
+            Upload_at: new Date(),
+            Num_of_tracks: 0
+        },
+      });
     await Playlist.sequelize.query(`SET @ID = (SELECT MAX(PlaylistID) FROM playlist);`);
     const newPlaylist = await Playlist.sequelize.query(`INSERT INTO playlist (PlaylistID, Playlist_name, Cover_img, Created_at, Upload_at, Num_of_tracks)
     VALUES (@ID + 1, '${req.body.PlaylistName}', ${req.body.CoverImg ? `'${req.body.CoverImg}'`: null}, 
@@ -38,6 +58,19 @@ router.post('/playlist', async (req, res) => {
 });
 
 router.put('/playlist/:id', async (req, res) =>{
+    client.update({
+        index: "playlists",
+        refresh: true,
+        id: req.params.id,
+        body: {Playlist_name: req.body.PlaylistName,
+            Cover_img: req.body.CoverImg,
+            Created_at: req.body.CreatedAt,
+        },
+    }, function (err, resp) {
+        if (err) {	
+            console.log(err);
+        }
+    })
     const playlist = await Playlist.sequelize.query(`UPDATE playlist SET Playlist_name = :name, Cover_img = :img, Created_at = :created WHERE PlaylistID = :id;`,{
         replacements: {id: req.params.id, img: req.body.CoverImg, name: req.body.PlaylistName, created: req.body.CreatedAt},
       });

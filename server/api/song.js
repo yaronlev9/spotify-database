@@ -2,6 +2,19 @@ const { Router } = require('express');
 const { Song } = require('../models');
 
 const router = Router();
+const { Client } = require('@elastic/elasticsearch');
+
+
+const client = new Client({
+  cloud: {
+    id: 'name:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyQxMzc2NDlhODM5NTk0ZTczOGRiN2JkZThjODNkZTVkNyRmNGIwNDNjMGM1NGE0ZDM0ODgxY2MyMDE3ZTg5ZTE1Zg==',
+  },
+  auth: {
+    username: 'elastic',
+    password: 'O0yKjai98EckDgHCuC8hxYmK'
+  }
+});
+
 router.get('/top_songs', async (req, res) => {
     const songs = await Song.sequelize.query('SELECT * FROM song ORDER BY SongID LIMIT 20;', {
         type: Song.sequelize.QueryTypes.SELECT
@@ -48,6 +61,18 @@ router.get('/best_artist_songs/:id', async (req, res) =>{
 });
 
 router.post('/song', async (req, res) => {
+    client.index({
+        index: 'songs',
+        body: {Youtube_link: req.body.YoutubeLink,
+            AlbumID: req.body.AlbumId, 
+            ArtistID: req.body.ArtistId,
+            Title: req.body.Title,
+            Length: req.body.Length,
+            Lyrics: req.body.Lyrics,
+            Created_at: req.body.CreatedAt,
+            Upload_at: new Date(),
+        },
+      });
     await Song.sequelize.query(`SET @ID = (SELECT MAX(SongID) FROM song);`);
     const newSong = await Song.sequelize.query(`INSERT INTO song (SongID, Youtube_link, AlbumID, ArtistID, Title, Length, Lyrics, Created_at, Upload_at)
     VALUES (@ID + 1, '${req.body.YoutubeLink}', ${req.body.AlbumId ? req.body.AlbumId : 0}, ${req.body.ArtistId}, 
@@ -61,6 +86,21 @@ router.post('/song', async (req, res) => {
 });
 
 router.put('/song/:id', async (req, res) =>{
+    client.update({
+        index: "songs",
+        refresh: true,
+        id: req.params.id,
+        body: {Youtube_link: req.body.YoutubeLink,
+            Title: req.body.Title,
+            Length: req.body.Length,
+            Lyrics: req.body.Lyrics,
+            Created_at: req.body.CreatedAt,
+        },
+    }, function (err, resp) {
+        if (err) {	
+            console.log(err);
+        }
+    })
     const song = await Song.sequelize.query(`UPDATE song SET Youtube_link = :link, Title = :title, Length = :length, Lyrics = :lyrics, Created_at = :created WHERE SongID = :id;`,{
         replacements: {id: req.params.id, link: req.body.YoutubeLink, title: req.body.Title, created: req.body.CreatedAt, length: req.body.Length, lyrics: req.body.Lyrics},
     });

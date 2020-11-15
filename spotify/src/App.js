@@ -5,7 +5,7 @@ import Album from './components/album_page';
 import Artist from './components/artist_page';
 import Song from './components/song_page';
 import Login from './components/login_page';
-import {useHistory, Switch, Route, NavLink} from 'react-router-dom';
+import {useLocation, useHistory, Switch, Route, NavLink} from 'react-router-dom';
 import './App.css';
 import mixpanel from './AnalyticsManager'
 import AppBar from './components/App_bar'
@@ -15,11 +15,13 @@ import SearchAlbums from './components/search_albums'
 import SearchArtists from './components/search_artists'
 import SearchPlaylists from './components/search_playlists'
 
+const searchPages = ['/albums','/songs','/artists','/playlists'];
 function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [userName, setUserName] = useState();
   const [search, setSearch] = useState('');
 
+  const location = useLocation()
   const history = useHistory() 
   function refresh(){
     window.scrollTo(0, 0);
@@ -29,6 +31,10 @@ function App() {
     if (value === ''){
       setSearch(value);
       history.push("/home");
+      return;
+    }
+    else if (searchPages.includes(location.pathname)){
+      setSearch(value);
       return;
     }
     setSearch(value);

@@ -38,7 +38,6 @@ export default function SearchPage(props) {
         setAlbums([])
       }
       items = await network.get(`/api/search/artists/${props.search}`).then((res) => res.data);
-      console.log(items)
       if (items){
         setArtists(items.slice(0,3));
       }

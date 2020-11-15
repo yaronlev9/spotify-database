@@ -16,7 +16,7 @@ const client = new Client({
 
 router.get('/playlists/:search', async (req, res) => {
     client.search({
-        index: 'allplaylists',
+        index: 'playlists',
         from: 0,
         size: 100,
         body: {

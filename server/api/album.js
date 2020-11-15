@@ -1,5 +1,16 @@
 const { Router } = require('express');
 const { Album } = require('../models');
+const { Client } = require('@elastic/elasticsearch');
+
+const client = new Client({
+    cloud: {
+      id: 'name:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyQxMzc2NDlhODM5NTk0ZTczOGRiN2JkZThjODNkZTVkNyRmNGIwNDNjMGM1NGE0ZDM0ODgxY2MyMDE3ZTg5ZTE1Zg==',
+    },
+    auth: {
+      username: 'elastic',
+      password: 'O0yKjai98EckDgHCuC8hxYmK'
+    }
+  });
 
 const router = Router();
 router.get('/top_albums', async (req, res) => {
@@ -24,6 +35,16 @@ router.get('/artist-albums/:id', async (req, res) =>{
 });
 
 router.post('/album', async (req, res) => {
+    client.index({
+        index: 'albums',
+        body: {ArtistID: req.body.ArtistId,
+            Album_name: req.body.AlbumName,
+            Cover_img: req.body.CoverImg,
+            Created_at: req.body.CreatedAt,
+            Upload_at: new Date(),
+            Num_of_tracks: 0
+        },
+      });
     await Album.sequelize.query(`SET @ID = (SELECT MAX(AlbumID) FROM album);`);
     const newAlbum = await Album.sequelize.query(`INSERT INTO album (AlbumID, ArtistID, Album_name, Cover_img, Upload_at, Num_of_tracks)
     VALUES (@ID + 1, ${req.body.ArtistId}, '${req.body.AlbumName}', ${req.body.CoverImg ? `'${req.body.CoverImg}'`: null}, 
@@ -33,6 +54,19 @@ router.post('/album', async (req, res) => {
 });
 
 router.put('/album/:id', async (req, res) =>{
+    client.update({
+        index: "albums",
+        refresh: true,
+        id: req.params.id,
+        body: {Album_name: req.body.AlbumName,
+            Cover_img: req.body.CoverImg,
+            Created_at: req.body.CreatedAt,
+        },
+    }, function (err, resp) {
+        if (err) {	
+            console.log(err);
+        }
+    })
     const album = await Album.sequelize.query(`UPDATE album SET Album_name = :name, Cover_img = :img, Created_at = :created WHERE AlbumID = :id;`,{
         replacements: {id: req.params.id, img: req.body.CoverImg, name: req.body.AlbumName, created: req.body.CreatedAt},
       });

@@ -67,7 +67,7 @@ export default function SearchAppBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed" style={{ background: '#696969' }}>
+      <AppBar position="fixed" style={{ background: '#242124' }}>
         <Toolbar>
           <Typography  variant="h6" noWrap>
             <NavLink to="/" className = 'titleBar' style={{color: 'green', 'textDecoration': 'none', backgroundColor: 'black'}}><span style={{fontSize:"20"}}>SPOTIFY</span></NavLink>
