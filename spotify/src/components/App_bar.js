@@ -6,7 +6,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import {NavLink} from 'react-router-dom';
-
+import './App_bar.css'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -70,7 +70,7 @@ export default function SearchAppBar(props) {
       <AppBar position="fixed" style={{ background: '#242124' }}>
         <Toolbar>
           <Typography  variant="h6" noWrap>
-            <NavLink to="/" className = 'titleBar' style={{color: 'green', 'textDecoration': 'none', backgroundColor: 'black'}}><span style={{fontSize:"20"}}>SPOTIFY</span></NavLink>
+            <NavLink to="/" className = 'titleBar'><span style={{fontSize:"20"}}>SPOTIFY</span></NavLink>
           </Typography>
           {
         props.isLogged &&

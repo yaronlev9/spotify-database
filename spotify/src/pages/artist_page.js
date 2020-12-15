@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import network from '../services/network';
 import 'react-multi-carousel/lib/styles.css';
-import Album from './Album';
+import Album from '../components/Album';
 import '../App.css';
 import mixpanel from '../AnalyticsManager'
 

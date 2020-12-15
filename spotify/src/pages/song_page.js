@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {useLocation, useParams, useHistory} from 'react-router-dom';
 import network from '../services/network';
 import '../App.css';
-import Player from './player';
+import Player from '../components/player';
 import mixpanel from '../AnalyticsManager'
 
 function str_pad_left(string,pad,length) {
